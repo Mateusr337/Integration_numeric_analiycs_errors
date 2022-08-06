@@ -13,7 +13,7 @@ x0 = -1
 v0 = 1
 
 
-def a(x): return - (k * x / m)
+def a(x): return - (4 * x ** 3 - 4 * x) / m
 
 
 def V(xt):
