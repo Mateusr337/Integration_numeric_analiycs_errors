@@ -1,3 +1,4 @@
+from cProfile import label
 from cmath import sqrt
 import numpy as np
 import matplotlib.pyplot as plt
@@ -117,6 +118,8 @@ def error(v, x):
     err = sqrt(soma / len(x))
     return err
 
+# Errors
+
 
 verletErr = []
 rk2Err = []
@@ -124,12 +127,11 @@ rk4Err = []
 deltas = []
 
 
-# Erro em escala normal
-
 for i in range(8):
     verlet = Verlet(t_max, delta, x0, v0, a)
     rk2 = RK2(t_max, delta, x0, v0, a)
-    rk4 = RK4(t_max, delta, x0, v0, a)
+    rk4 = RK4(delta, t_max, x0, v0, a)
+    print(rk4['v'])
 
     verletErr.append(error(verlet['v'], verlet['x']))
     rk2Err.append(error(rk2['v'], rk2['x']))
@@ -138,8 +140,51 @@ for i in range(8):
 
     delta = delta / 2
 
+print(rk4Err)
 
-plt.plot(deltas, verletErr)
-plt.plot(deltas, rk2Err)
-plt.plot(deltas, rk4Err)
+
+# Erro em escala normal
+
+plt.plot(deltas, verletErr, label="verlet", marker=".")
+plt.plot(deltas, rk2Err, label="RK2",  marker=".")
+plt.plot(deltas, rk4Err, label="RK4",  marker=".")
+plt.title("Escala normal")
+plt.xlabel("dt")
+plt.ylabel("erro")
+plt.legend()
+plt.show()
+
+
+# # Erro em escala semi-log x
+
+plt.semilogx(deltas, verletErr, label="verlet",  marker=".")
+plt.semilogx(deltas, rk2Err, label="RK2",  marker=".")
+plt.semilogx(deltas, rk4Err, label="RK4",  marker=".")
+plt.title("Escala semi-log x")
+plt.xlabel("dt")
+plt.ylabel("erro")
+plt.legend()
+plt.show()
+
+
+# Erro em escala semi-log y
+
+plt.semilogy(deltas, verletErr, label="verlet",  marker=".")
+plt.semilogy(deltas, rk2Err, label="RK2",  marker=".")
+plt.semilogy(deltas, rk4Err, label="RK4",  marker=".")
+plt.title("Escala semi-log y")
+plt.xlabel("dt")
+plt.ylabel("erro")
+plt.legend()
+plt.show()
+
+# Erro em escala log-log
+
+plt.loglog(deltas, verletErr, label="verlet",  marker=".")
+plt.loglog(deltas, rk2Err, label="RK2",  marker=".")
+plt.loglog(deltas, rk4Err, label="RK4",  marker=".")
+plt.title("Escala log-log")
+plt.xlabel("dt")
+plt.ylabel("erro")
+plt.legend()
 plt.show()
