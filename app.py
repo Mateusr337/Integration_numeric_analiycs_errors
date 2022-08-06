@@ -127,11 +127,10 @@ rk4Err = []
 deltas = []
 
 
-for i in range(8):
+for i in range(18):
     verlet = Verlet(t_max, delta, x0, v0, a)
     rk2 = RK2(t_max, delta, x0, v0, a)
     rk4 = RK4(delta, t_max, x0, v0, a)
-    print(rk4['v'])
 
     verletErr.append(error(verlet['v'], verlet['x']))
     rk2Err.append(error(rk2['v'], rk2['x']))
@@ -140,51 +139,58 @@ for i in range(8):
 
     delta = delta / 2
 
-print(rk4Err)
+partVereltErr = verletErr[:9]
+partRK2Err = rk2Err[:9]
+partRK4Err = rk4Err[:9]
+partDeltas = deltas[:9]
 
 
 # Erro em escala normal
 
-plt.plot(deltas, verletErr, label="verlet", marker=".")
-plt.plot(deltas, rk2Err, label="RK2",  marker=".")
-plt.plot(deltas, rk4Err, label="RK4",  marker=".")
+plt.plot(partDeltas, partVereltErr, label="verlet", marker=".")
+plt.plot(partDeltas, partRK2Err, label="RK2",  marker=".")
+plt.plot(partDeltas, partRK4Err, label="RK4",  marker=".")
 plt.title("Escala normal")
 plt.xlabel("dt")
 plt.ylabel("erro")
 plt.legend()
+plt.savefig("normal")
 plt.show()
 
 
 # # Erro em escala semi-log x
 
-plt.semilogx(deltas, verletErr, label="verlet",  marker=".")
-plt.semilogx(deltas, rk2Err, label="RK2",  marker=".")
-plt.semilogx(deltas, rk4Err, label="RK4",  marker=".")
+plt.semilogx(partDeltas, partVereltErr, label="verlet", marker=".")
+plt.semilogx(partDeltas, partRK2Err, label="RK2",  marker=".")
+plt.semilogx(partDeltas, partRK4Err, label="RK4",  marker=".")
 plt.title("Escala semi-log x")
 plt.xlabel("dt")
 plt.ylabel("erro")
 plt.legend()
+plt.savefig("logx")
 plt.show()
 
 
 # Erro em escala semi-log y
 
-plt.semilogy(deltas, verletErr, label="verlet",  marker=".")
-plt.semilogy(deltas, rk2Err, label="RK2",  marker=".")
-plt.semilogy(deltas, rk4Err, label="RK4",  marker=".")
+plt.semilogy(partDeltas, partVereltErr, label="verlet", marker=".")
+plt.semilogy(partDeltas, partRK2Err, label="RK2",  marker=".")
+plt.semilogy(partDeltas, partRK4Err, label="RK4",  marker=".")
 plt.title("Escala semi-log y")
 plt.xlabel("dt")
 plt.ylabel("erro")
 plt.legend()
+plt.savefig("logy")
 plt.show()
 
 # Erro em escala log-log
 
-plt.loglog(deltas, verletErr, label="verlet",  marker=".")
+plt.loglog(deltas, verletErr, label="verlet", marker=".")
 plt.loglog(deltas, rk2Err, label="RK2",  marker=".")
 plt.loglog(deltas, rk4Err, label="RK4",  marker=".")
 plt.title("Escala log-log")
 plt.xlabel("dt")
 plt.ylabel("erro")
 plt.legend()
+plt.savefig("loglog")
 plt.show()
